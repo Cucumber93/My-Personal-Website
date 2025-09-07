@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "tailwindcss";
+
+/* นำเข้าฟอนต์จาก Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap');
+
+:root {
+  --bg-dark: #070b2a; 
+}
+
+html, body {
+  scroll-behavior: smooth;
+  color: white;
+  font-family: 'Kanit', sans-serif; /* 👈 ใช้ฟอนต์ทั้งเว็บ */
+  background-color: var(--bg-dark); /* optional */
+}
+
+/* Keyframes แยก 3 ชุด */
+@keyframes blob1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(20px,-30px) scale(1.1)} }
+@keyframes blob2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-25px,15px) scale(0.9)} }
+@keyframes blob3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(15px,25px) scale(1.05)} }
+
+/* Utilities */
+.animate-blob1 { animation: blob1 12s ease-in-out infinite; }
+.animate-blob2 { animation: blob2 12s ease-in-out infinite 4s; }
+.animate-blob3 { animation: blob3 12s ease-in-out infinite 8s; }
