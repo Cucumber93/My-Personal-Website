@@ -1,7 +1,7 @@
 
 export default function Header() {
     return (
-        <header className="fixed w-full z-4">
+        <header className="fixed w-full z-1000 ">
             <div className=' flex justify-between pl-10 pr-10 pt-5'>
             <div>RUNGTIWA TAEUDOMCHOK</div>
             <div className="flex gap-10">

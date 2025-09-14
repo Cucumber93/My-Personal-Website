@@ -17,12 +17,23 @@ html, body {
   background-color: var(--bg-dark); /* optional */
 }
 
-/* Keyframes แยก 3 ชุด */
-@keyframes blob1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(20px,-30px) scale(1.1)} }
-@keyframes blob2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-25px,15px) scale(0.9)} }
-@keyframes blob3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(15px,25px) scale(1.05)} }
+@keyframes blob-rotate-cw {
+  0%   { transform: rotate(0deg) translateX(0) translateY(0); }
+  50%  { transform: rotate(180deg) translateX(20%) translateY(-20%); }
+  100% { transform: rotate(360deg) translateX(0) translateY(0); }
+}
 
-/* Utilities */
-.animate-blob1 { animation: blob1 12s ease-in-out infinite; }
-.animate-blob2 { animation: blob2 12s ease-in-out infinite 4s; }
-.animate-blob3 { animation: blob3 12s ease-in-out infinite 8s; }
+@keyframes blob-rotate-ccw {
+  0%   { transform: rotate(0deg) translateX(0) translateY(0); }
+  50%  { transform: rotate(-180deg) translateX(-20%) translateY(20%); }
+  100% { transform: rotate(-360deg) translateX(0) translateY(0); }
+}
+
+@layer utilities {
+  .animate-blob-cw {
+    animation: blob-rotate-cw 5s linear infinite;
+  }
+  .animate-blob-ccw {
+    animation: blob-rotate-ccw 5s linear infinite;
+  }
+}
