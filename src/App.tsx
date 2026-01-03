@@ -10,6 +10,7 @@ function App() {
 
   return (
     <div>
+      <div>hi</div>
       <section id='header'>
         <Header/>
       </section>
