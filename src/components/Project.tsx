@@ -1,55 +1,83 @@
-
+import { useState, useEffect } from 'react';
+import { getProjects } from '../services/api';
+import type { Project } from '../types/project';
 
 export default function Projects() {
+    const [projects, setProjects] = useState<Project[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    const mockProjectsData = [
-        {
-            img: './imgs/mock.jpg',
-            title: 'title1',
-            description: 'description1'
-        },
-        {
-            img: './imgs/mock.jpg',
-            title: 'title2',
-            description: 'description2'
-        },
-        {
-            img: './imgs/mock.jpg',
-            title: 'title3',
-            description: 'description3'
-        },
-        {
-            img: './imgs/mock.jpg',
-            title: 'title4',
-            description: 'description4'
-        },
-        {
-            img: './imgs/mock.jpg',
-            title: 'title5',
-            description: 'description5'
-        },
-        {
-            img: './imgs/mock.jpg',
-            title: 'title6',
-            description: 'description6'
-        },
+    useEffect(() => {
+        loadProjects();
+    }, []);
 
-    ]
+    const loadProjects = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const data = await getProjects();
+            setProjects(data);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Failed to load projects');
+            console.error('Error loading projects:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="bg-[#080B38] flex flex-col justify-center items-center p-15 gap-15 min-h-[400px]">
+                <div className="uppercase text-[32px]">my projects</div>
+                <div className="text-white">Loading projects...</div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="bg-[#080B38] flex flex-col justify-center items-center p-15 gap-15 min-h-[400px]">
+                <div className="uppercase text-[32px]">my projects</div>
+                <div className="text-red-400">Error: {error}</div>
+                <button 
+                    onClick={loadProjects}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+                >
+                    Retry
+                </button>
+            </div>
+        );
+    }
+
+    if (projects.length === 0) {
+        return (
+            <div className="bg-[#080B38] flex flex-col justify-center items-center p-15 gap-15 min-h-[400px]">
+                <div className="uppercase text-[32px]">my projects</div>
+                <div className="text-white">No projects found</div>
+            </div>
+        );
+    }
+
     return (
         <div className="bg-[#080B38] flex flex-col justify-center items-center p-15 gap-15">
             <div className="uppercase text-[32px]">
                 my projects
             </div>
-            <div className="grid grid-cols-2 gap-5 w-full">
-                {mockProjectsData.map((item) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full max-w-6xl px-4">
+                {projects.map((project) => (
                     <div
-                        key={item.img}
+                        key={project.id}
                         className="relative group overflow-hidden rounded-lg shadow-lg"
                     >
                         {/* รูป */}
                         <img
-                            src={item.img}
-                            className="w-full h-auto transition-transform duration-500 group-hover:scale-105"
+                            src={project.image || 'https://via.placeholder.com/400x300?text=No+Image'}
+                            alt={project.projectName}
+                            className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+                            onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = 'https://via.placeholder.com/400x300?text=Image+Not+Found';
+                            }}
                         />
 
                         {/* overlay ดำ */}
@@ -59,14 +87,12 @@ export default function Projects() {
                         <div
                             className="absolute bottom-0 left-0 right-0 p-5 text-white translate-y-full group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500"
                         >
-                            <h3 className="text-xl font-bold">Cookie Website</h3>
-                            <p className="text-sm">description dskloi m,ncxlslk oasiehfds</p>
+                            <h3 className="text-xl font-bold">{project.projectName}</h3>
+                            <p className="text-sm mt-2">{project.description || 'No description'}</p>
                         </div>
                     </div>
                 ))}
             </div>
-
         </div>
-
-    )
+    );
 }
