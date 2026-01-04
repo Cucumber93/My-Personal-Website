@@ -1,6 +1,7 @@
 import type { Project } from '../types/project';
 
-const API_BASE_URL = 'http://localhost:3001/api';
+// Get API URL from environment variable, fallback to default
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3100/api';
 
 /**
  * Fetch all projects from the API
